@@ -3,18 +3,20 @@ package gomod
 import (
 	"context"
 	"os"
+	"path/filepath"
 
 	"golang.org/x/mod/modfile"
 )
 
 type GoModConfig struct {
-	GoVersion   string
-	ModulePaths []string
+	GoVersion   string   `yaml:"go_version"`
+	ModulePaths []string `yaml:"module_paths"`
 }
 
 func Replace(ctx context.Context, gomodConfig *GoModConfig) error {
 	for _, modulePath := range gomodConfig.ModulePaths {
-		f, err := os.ReadFile(modulePath)
+		path := filepath.Join(modulePath, "go.mod")
+		f, err := os.ReadFile(path)
 		if err != nil {
 			return err
 		}
@@ -27,7 +29,7 @@ func Replace(ctx context.Context, gomodConfig *GoModConfig) error {
 		if err != nil {
 			return err
 		}
-		if err := os.WriteFile(modulePath, out, 0644); err != nil {
+		if err := os.WriteFile(path, out, 0644); err != nil {
 			return err
 		}
 	}

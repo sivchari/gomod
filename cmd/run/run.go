@@ -26,6 +26,7 @@ func (c *Command) Run(ctx context.Context) error {
 	if err := yaml.Unmarshal(f, cfg); err != nil {
 		panic(fmt.Errorf("RunCommand unmarshal yaml, but got error: %w", err))
 	}
+	fmt.Println(cfg)
 	if err := gomod.Replace(ctx, cfg); err != nil {
 		panic(fmt.Errorf("RunCommand tried to replace go version, but got error: %w", err))
 	}
@@ -47,5 +48,5 @@ func (c *Command) Long() string {
 var file *string
 
 func (c *Command) SetFlags(f *pflag.FlagSet) {
-	f.StringVarP(file, "file", "f", "", "File path")
+	file = f.StringP("file", "f", "gomod.yaml", "file path")
 }
