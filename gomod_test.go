@@ -18,7 +18,7 @@ go 1.17
 	if err != nil {
 		t.Fatalf("error: %v", err)
 	}
-	path := filepath.Join(wd, "testdata/go.mod")
+	path := filepath.Join(wd, "testdata")
 
 	if err := Replace(context.Background(), &GoModConfig{
 		ModulePaths: []string{path},
@@ -34,7 +34,7 @@ go 1.17
 		})
 	})
 
-	f, err := os.ReadFile(path)
+	f, err := os.ReadFile(filepath.Join(path, "go.mod"))
 	if err != nil {
 		t.Fatalf("error: %v", err)
 	}
