@@ -1,0 +1,26 @@
+project_name: gomod
+
+env:
+  - GO111MODULE=on
+
+builds:
+  - id: gomod
+    main: ./cmd/gomod.go
+    binary: gomod
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - id: gomod
+    builds:
+      - gomod
+    name_template: '{{ .Binary }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    format_overrides:
+      - goos: windows
+        format: zip
